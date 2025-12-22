@@ -36,6 +36,9 @@ const GymRoutes=require('./Routes/Gym');
 const MembershipRoutes=require('./Routes/Membership');
 const MemberRoutes=require('./Routes/Member')
 
+app.get("/", (req, res) => {
+  res.send("Gym Management API is running 🚀");
+});
 app.use('/auth',GymRoutes)
 app.use('/plans',MembershipRoutes);
 app.use('/members',MemberRoutes);

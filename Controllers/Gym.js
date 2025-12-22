@@ -1,9 +1,10 @@
 const Gym = require("../Modals/Gym");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
-const nodemailer=require("nodemailer")
+// ****************************
+// const nodemailer=require("nodemailer")
 const jwt=require('jsonwebtoken');
-
+const sendEmail = require("../utils/sendEmail");
 
 exports.register = async (req, res) => {
   try {
@@ -78,16 +79,16 @@ exports.login = async (req, res) => {
   }
 };
 
-
-const transporter=nodemailer.createTransport({
-  service:'gmail',
-  auth:{
-    user:process.env.SENDER_EMAIL,
-    pass:process.env.EMAIL_PASSWORD,
+// ***************************
+// const transporter=nodemailer.createTransport({
+//   service:'gmail',
+//   auth:{
+//     user:process.env.SENDER_EMAIL,
+//     pass:process.env.EMAIL_PASSWORD,
   
-  }
+//   }
   
-});
+// });
 
 // const transporter = nodemailer.createTransport({
 //   host: "smtp.gmail.com",
@@ -99,13 +100,15 @@ const transporter=nodemailer.createTransport({
 //   },
 // });
 
-transporter.verify((err, success) => {
-  if (err) {
-    console.log("SMTP ERROR:", err);
-  } else {
-    console.log("SMTP CONNECTED");
-  }
-});
+
+// ***********************************
+// transporter.verify((err, success) => {
+//   if (err) {
+//     console.log("SMTP ERROR:", err);
+//   } else {
+//     console.log("SMTP CONNECTED");
+//   }
+// });
 
 exports.sendOtp = async (req, res) => {
   try {
@@ -117,22 +120,31 @@ exports.sendOtp = async (req, res) => {
       gym.resetPasswordToken=token;
       gym.resetPasswordExpires=Date.now()+3600000;//1 hr expiry date
       await gym.save();
+// **********************
+      // //for email sending
+      // const mailOptions={
+      //   from:'farehamaroof10@gmail.com',
+      //   to:email,
+      //   subject:'Password Reset',
+      //   text:`you requested a password reset,your OTP is :${token}`
+      // };
+      // transporter.sendMail(mailOptions,(error,info)=>{
+      //   if(error){
+      //     res.status(500).json({
+      //       error:'Server error',errorMsg:error});
+      //   }else{
+      //     res.status(200).json({message:"OTP Sent to your email"})
+      //   }
+      // });
+await sendEmail(
+  email,
+  "Password Reset OTP",
+  `You requested a password reset. Your OTP is: ${token}`
+);
 
-      //for email sending
-      const mailOptions={
-        from:'farehamaroof10@gmail.com',
-        to:email,
-        subject:'Password Reset',
-        text:`you requested a password reset,your OTP is :${token}`
-      };
-      transporter.sendMail(mailOptions,(error,info)=>{
-        if(error){
-          res.status(500).json({
-            error:'Server error',errorMsg:error});
-        }else{
-          res.status(200).json({message:"OTP Sent to your email"})
-        }
-      });
+res.status(200).json({ message: "OTP Sent to your email" });
+
+
     } else {
       return res.status(400).json({
         error: "gym not found",
