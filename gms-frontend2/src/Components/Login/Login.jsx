@@ -56,9 +56,10 @@ import { toast, ToastContainer } from 'react-toastify';
 const Login = () => {
   const [loginField, setLoginField] = useState({ userName: "", password: "" });
   const navigate = useNavigate();
+  const API = import.meta.env.VITE_API_URL;
 
   const handleLogin = async () => {
-    await axios.post('http://localhost:4000/auth/login', loginField, { withCredentials: true })
+    await axios.post(`${API}/auth/login`, loginField, { withCredentials: true })
       .then((response) => {
         localStorage.setItem('gymName', response.data.gym.gymName);
         localStorage.setItem('gymPic', response.data.gym.profilePic);

@@ -8,6 +8,7 @@ const ForgotPassword = () => {
  const [otpValidate,setOtpValidate]=useState(false)
  const [contentVal,setContentVal]=useState("enter email")
  const [inputField,setInputField]=useState({email:"",otp:"",newPassword:""});
+ const API = import.meta.env.VITE_API_URL;
  const handleSubmit = () => {
     if (!emailSubmit) {
       
@@ -22,8 +23,12 @@ const ForgotPassword = () => {
   };
 
   const changePassword = async () => {
-  await axios
-    .post("http://localhost:4000/auth/reset-password", {
+  // await axios
+  //   .post("http://localhost:4000/auth/reset-password", 
+      
+      
+      await axios.post(`${API}/auth/reset-password`, 
+{
       email: inputField.email,
       newPassword: inputField.newPassword,
     })
@@ -40,7 +45,7 @@ const ForgotPassword = () => {
 
 
   const verifyOtp=async()=>{
-    await axios.post("http://localhost:4000/auth/reset-password/checkOtp",{email:inputField.email,otp:inputField.otp}).then((response)=>{
+    await axios.post(`${API}/auth/reset-password/checkOtp`,{email:inputField.email,otp:inputField.otp}).then((response)=>{
       setOtpValidate(true)
               setContentVal("Submit your new Password")
               toast.success(response.data.message);
@@ -55,7 +60,7 @@ const ForgotPassword = () => {
 
 
   const sendOtp=async()=>{
-    await axios.post('http://localhost:4000/auth/reset-password/sendOtp',{email:inputField.email}).then((response)=>{
+    await axios.post(`${API}/auth/reset-password/sendOtp`,{email:inputField.email}).then((response)=>{
       setEmailSubmit(true)
       setContentVal("submit your Otp");
       toast.success(response.data.message);

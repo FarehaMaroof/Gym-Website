@@ -126,6 +126,7 @@ import ForgotPassword from "../ForgotPassword/ForgotPassword";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
+const API = import.meta.env.VITE_API_URL;
 const SignUp = () => {
   const [forgotPassword, setForgotPassword] = useState(false);
   const [inputField, setInputField] = useState({
@@ -160,7 +161,7 @@ const SignUp = () => {
   };
 
   const handleRegister = async () => {
-    await axios.post('http://localhost:4000/auth/register', inputField)
+    await axios.post(`${API}/auth/register`, inputField)
       .then((resp) => {
         toast.success(resp.data.message);
       })

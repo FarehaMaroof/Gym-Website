@@ -8,9 +8,9 @@ const AddMembership = ({handleClose}) => {
   const handleOnChange =(event,name)=>{
     setInputField({...inputField,[name]:event.target.value})
   }
-
+const API = import.meta.env.VITE_API_URL;
 const fetchMembership=async()=>{
-  await axios.get("http://localhost:4000/plans/get-membership",{withCredentials:true}).then((res)=>{
+  await axios.get(`${API}/plans/get-membership`,{withCredentials:true}).then((res)=>{
      setMembership(res.data.membership)
      toast.success(res.data.membership.length+"Membership fetched")
   }).catch(err=>{
@@ -24,7 +24,8 @@ const fetchMembership=async()=>{
   },[])
 
   const handleAddmembership=async()=>{
-    await axios.post('http://localhost:4000/plans/add-membership',inputField,{withCredentials:true}).then((res)=>{
+    //  await axios.post('http://localhost:4000/plans/add-membership'
+    await axios.post(`${API}/plans/add-membership`,inputField,{withCredentials:true}).then((res)=>{
       toast.success(res.data.message);
        handleClose();
     }).catch(err=>{

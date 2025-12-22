@@ -13,7 +13,7 @@ const PORT=process.env.PORT;
 // }))
 
 
-const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
+const allowedOrigins = ["http://localhost:5173", "http://localhost:5174","gym-website-puce-eta.vercel.app"];
 
 app.use(cors({
   origin: function(origin, callback){

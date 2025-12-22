@@ -36,11 +36,17 @@ exports.register = async (req, res) => {
   }
 };
 
-cookieOptions={
-  httpOnly:true,
-  secure:false,//set to true in production
-  sameSite:'Lax'
-}
+// cookieOptions={
+//   httpOnly:true,
+//   secure:false,//set to true in production
+//   sameSite:'Lax'
+// }
+
+const cookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+};
 
 exports.login = async (req, res) => {
   try {
